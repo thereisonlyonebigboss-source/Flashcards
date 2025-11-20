@@ -246,7 +246,7 @@ def get_user_response() -> str:
             return 'q'
 
 
-def run_quiz(df: pd.DataFrame, limit: Optional[int] = None) -> Dict:
+def run_quiz(df, limit: Optional[int] = None) -> Dict:
     """
     Run a complete quiz session.
 
