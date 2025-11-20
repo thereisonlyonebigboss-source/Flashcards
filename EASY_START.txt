@@ -1,0 +1,34 @@
+🧠 AI FLASHCARD GENERATOR - EASY START GUIDE
+===============================================
+
+For Mom (or anyone who wants it super simple!):
+
+🚀 ONE CLICK TO START:
+
+WINDOWS:
+Double-click the file called "START_APP.bat"
+
+MAC:
+Double-click the file called "START_APP.command"
+
+✨ THAT'S IT! Your web browser will open automatically!
+
+📚 HOW TO USE:
+1. Your web browser opens automatically
+2. Click "Choose Files" and select your study documents
+3. Click "Generate Flashcards"
+4. Download your Excel file
+5. Click "Quiz" to test yourself
+
+💡 TIPS:
+- Works with: TXT files, Word documents, PDF files
+- No technical knowledge needed
+- Just double-click and go!
+
+❌ IF IT DOESN'T WORK:
+Make sure Ollama is installed first:
+1. Go to https://ollama.ai/
+2. Download and install Ollama
+3. Then try again
+
+That's everything! Enjoy your flashcards! 🎉
