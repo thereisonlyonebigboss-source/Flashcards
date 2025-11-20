@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Flashcard Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            border: 3px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .upload-section:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .upload-section.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 10px;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .file-result {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .file-result.error {
+            border-left-color: #dc3545;
+        }
+
+        .file-result.warning {
+            border-left-color: #ffc107;
+        }
+
+        .flashcards-preview {
+            margin-top: 30px;
+        }
+
+        .flashcard {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .flashcard .question {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .flashcard .answer {
+            color: #666;
+            font-style: italic;
+        }
+
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+        }
+
+        .quiz-btn {
+            background: #17a2b8;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+
+        .quiz-btn:hover {
+            background: #138496;
+        }
+
+        .status-indicator {
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .nav-menu {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            .main-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 AI Flashcard Generator</h1>
+            <p>Transform your study notes into intelligent flashcards using AI</p>
+
+            <div class="nav-menu">
+                <a href="/">📝 Generate</a>
+                <a href="/quiz">🎯 Quiz</a>
+                <a href="/about">ℹ️ About</a>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <h2>📁 Upload Your Study Notes</h2>
+
+            <div class="upload-section" id="uploadArea">
+                <div style="font-size: 3em; margin-bottom: 20px;">📚</div>
+                <p style="font-size: 1.2em; margin-bottom: 20px; color: #666;">
+                    Drag and drop your files here or click to browse
+                </p>
+                <p style="color: #888; margin-bottom: 20px;">
+                    Supports: TXT, MD, DOCX, PDF files
+                </p>
+                <input type="file" id="fileInput" class="file-input" multiple accept=".txt,.md,.docx,.pdf">
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    Choose Files
+                </button>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="subject">📚 Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="e.g., Biology, Chemistry, History" value="General">
+                </div>
+                <div class="form-group">
+                    <label for="subtopic">📂 Subtopic</label>
+                    <input type="text" id="subtopic" name="subtopic" placeholder="e.g., Cell Biology, Organic Chemistry" value="General">
+                </div>
+            </div>
+
+            <button class="upload-btn" onclick="generateFlashcards()" style="width: 100%; margin: 20px 0;">
+                🤖 Generate Flashcards
+            </button>
+
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="loading-spinner" id="loadingSpinner"></div>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <h2>🎉 Generation Results</h2>
+            <div id="fileResults"></div>
+
+            <div class="flashcards-preview" id="flashcardsPreview">
+                <h3>📋 Generated Flashcards Preview</h3>
+                <div id="flashcardsList"></div>
+            </div>
+
+            <div id="downloadSection" style="text-align: center; margin-top: 30px;">
+                <!-- Download buttons will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedFiles = [];
+
+        // Initialize drag and drop
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            uploadedFiles = Array.from(files);
+            updateUploadArea();
+        }
+
+        function updateUploadArea() {
+            if (uploadedFiles.length > 0) {
+                const fileNames = uploadedFiles.map(f => f.name).join(', ');
+                uploadArea.innerHTML = `
+                    <div style="font-size: 3em; margin-bottom: 20px;">✅</div>
+                    <p style="font-size: 1.2em; margin-bottom: 20px; color: #333;">
+                        ${uploadedFiles.length} file(s) selected
+                    </p>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        ${fileNames.length > 100 ? fileNames.substring(0, 100) + '...' : fileNames}
+                    </p>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        Change Files
+                    </button>
+                `;
+            }
+        }
+
+        async function generateFlashcards() {
+            if (uploadedFiles.length === 0) {
+                alert('Please select files first!');
+                return;
+            }
+
+            const subject = document.getElementById('subject').value || 'General';
+            const subtopic = document.getElementById('subtopic').value || 'General';
+
+            // Show progress
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('progressFill').style.width = '50%';
+            document.getElementById('loadingSpinner').style.display = 'block';
+
+            // Create FormData
+            const formData = new FormData();
+            uploadedFiles.forEach(file => {
+                formData.append('files', file);
+            });
+            formData.append('subject', subject);
+            formData.append('subtopic', subtopic);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                document.getElementById('progressFill').style.width = '100%';
+
+                if (result.success) {
+                    showResults(result);
+                } else {
+                    showError(result.error);
+                }
+            } catch (error) {
+                showError('Error: ' + error.message);
+            } finally {
+                setTimeout(() => {
+                    document.getElementById('progressBar').style.display = 'none';
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                }, 1000);
+            }
+        }
+
+        function showResults(result) {
+            const resultsSection = document.getElementById('resultsSection');
+            const fileResults = document.getElementById('fileResults');
+            const flashcardsList = document.getElementById('flashcardsList');
+            const downloadSection = document.getElementById('downloadSection');
+
+            // Show file results
+            let fileResultsHTML = '';
+            result.processed_files.forEach(file => {
+                let statusClass = file.status === 'success' ? 'status-success' :
+                                 file.status === 'error' ? 'status-error' : 'status-warning';
+
+                fileResultsHTML += `
+                    <div class="status-indicator ${statusClass}">
+                        <strong>${file.filename}</strong>:
+                        ${file.status === 'success' ? `✅ ${file.cards_generated} flashcards generated` :
+                          file.status === 'error' ? `❌ ${file.message}` :
+                          `⚠️ ${file.message}`}
+                    </div>
+                `;
+            });
+            fileResults.innerHTML = fileResultsHTML;
+
+            // Show flashcards preview
+            if (result.flashcards && result.flashcards.length > 0) {
+                let flashcardsHTML = '';
+                result.flashcards.slice(0, 5).forEach((card, index) => {
+                    flashcardsHTML += `
+                        <div class="flashcard">
+                            <div class="question">Q${index + 1}: ${card.question}</div>
+                            <div class="answer">A: ${card.answer}</div>
+                        </div>
+                    `;
+                });
+
+                if (result.flashcards.length > 5) {
+                    flashcardsHTML += `<p style="text-align: center; color: #666;">... and ${result.flashcards.length - 5} more flashcards</p>`;
+                }
+
+                flashcardsList.innerHTML = flashcardsHTML;
+            } else {
+                flashcardsList.innerHTML = '<p>No flashcards were generated.</p>';
+            }
+
+            // Show download section
+            if (result.download_url && result.excel_filename) {
+                downloadSection.innerHTML = `
+                    <h3>💾 Download Your Flashcards</h3>
+                    <p style="color: #666; margin-bottom: 20px;">
+                        Your ${result.total_cards} flashcards have been saved to Excel format!
+                    </p>
+                    <a href="${result.download_url}" class="download-btn">
+                        📊 Download Excel File
+                    </a>
+                    <a href="/quiz" class="quiz-btn">
+                        🎯 Take a Quiz
+                    </a>
+                `;
+            }
+
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            alert('Error: ' + message);
+        }
+
+        // Test Llama connection on page load
+        async function testLlamaConnection() {
+            try {
+                const response = await fetch('/api/test-llama');
+                const result = await response.json();
+
+                if (!result.success) {
+                    document.querySelector('.header p').innerHTML +=
+                        ' <span style="color: #ffc107;">⚠️ Llama connection issue detected</span>';
+                }
+            } catch (error) {
+                console.log('Could not test Llama connection:', error);
+            }
+        }
+
+        // Test connection when page loads
+        window.addEventListener('load', testLlamaConnection);
+    </script>
+</body>
+</html>
