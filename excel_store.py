@@ -182,6 +182,9 @@ def get_available_subjects(output_dir: Path) -> List[str]:
     Returns:
         Sorted list of unique subject names
     """
+    if not PANDAS_AVAILABLE:
+        raise ImportError("pandas library not available. Install with: pip install pandas openpyxl")
+
     df = load_all_records(output_dir)
     if df.empty:
         return []
