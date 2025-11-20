@@ -5,11 +5,19 @@ Terminal-based quiz interface with filtering, scoring, and review features.
 Provides an interactive flashcard testing experience.
 """
 
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, TYPE_CHECKING
 import random
 import sys
 
-import pandas as pd
+if TYPE_CHECKING:
+    import pandas as pd
+
+try:
+    import pandas as pd
+    PANDAS_AVAILABLE = True
+except ImportError:
+    PANDAS_AVAILABLE = False
+    pd = None
 
 from excel_store import load_all_records, get_available_subjects, get_available_subtopics
 
