@@ -434,6 +434,11 @@ def main_quiz_interface(output_dir):
     Args:
         output_dir: Directory containing Excel flashcard files
     """
+    if not PANDAS_AVAILABLE:
+        print("pandas library not available. Install with: pip install pandas openpyxl")
+        wait_for_enter()
+        return
+
     try:
         print("Loading flashcards...")
         df = load_all_records(output_dir)
