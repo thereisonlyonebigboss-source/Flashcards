@@ -161,6 +161,9 @@ class HTTPAIModel(AIModelInterface):
             headers: HTTP headers for requests
             payload_template: Template for request payload
         """
+        if not REQUESTS_AVAILABLE:
+            raise ImportError("requests library not available. Install with: pip install requests")
+
         self.api_url = api_url
         self.headers = headers or {"Content-Type": "application/json"}
         self.payload_template = payload_template or {}
