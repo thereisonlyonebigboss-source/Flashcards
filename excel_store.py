@@ -64,6 +64,9 @@ def save_records(output_dir: Path, subject: str, records: List[Dict]) -> Path:
     Returns:
         Path to the saved Excel file
     """
+    if not PANDAS_AVAILABLE:
+        raise ImportError("pandas library not available. Install with: pip install pandas openpyxl")
+
     if not records:
         return _get_excel_path(output_dir, subject)
 
