@@ -383,7 +383,7 @@ def select_filters(df) -> Optional:
         return subtopic_filtered
 
 
-def start_quiz_session(df: pd.DataFrame) -> bool:
+def start_quiz_session(df) -> bool:
     """
     Start a complete quiz session with filtering and results.
 
