@@ -352,7 +352,7 @@ def display_results(results: Dict):
     print(f"\n{'='*60}")
 
 
-def select_filters(df: pd.DataFrame) -> Optional[pd.DataFrame]:
+def select_filters(df) -> Optional:
     """
     Interactive filtering interface for subjects and subtopics.
 
