@@ -8,8 +8,18 @@ Supports .txt, .md, .docx, and .pdf files with robust error handling.
 from pathlib import Path
 from typing import Generator, Dict
 
-import pdfplumber
-import docx
+# Try to import optional dependencies
+try:
+    import pdfplumber
+    PDFPLUMBER_AVAILABLE = True
+except ImportError:
+    PDFPLUMBER_AVAILABLE = False
+
+try:
+    import docx
+    DOCX_AVAILABLE = True
+except ImportError:
+    DOCX_AVAILABLE = False
 
 # Supported file extensions for v1
 SUPPORTED_EXTENSIONS = {".txt", ".md", ".docx", ".pdf"}
