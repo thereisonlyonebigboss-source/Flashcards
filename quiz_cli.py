@@ -40,7 +40,7 @@ def wait_for_enter(message: str = "Press Enter to continue..."):
     input(f"\n{message}")
 
 
-def select_subject(df: pd.DataFrame) -> Optional[pd.DataFrame]:
+def select_subject(df) -> Optional:
     """
     Let user select a subject from available options.
 
