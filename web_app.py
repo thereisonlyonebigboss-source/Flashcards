@@ -22,7 +22,7 @@ app.secret_key = 'your-secret-key-change-this'
 # Configuration
 UPLOAD_FOLDER = 'uploads'
 OUTPUT_FOLDER = 'output'
-ALLOWED_EXTENSIONS = {'txt', 'md', 'docx', 'pdf'}
+ALLOWED_EXTENSIONS = {'txt', 'md', 'docx', 'pdf', 'pptx', 'ppt', 'xlsx', 'xls', 'csv'}
 MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB max file size
 
 # Ensure folders exist
