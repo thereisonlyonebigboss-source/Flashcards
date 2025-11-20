@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcard Quiz - AI Flashcard Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-menu {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .quiz-container {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            min-height: 400px;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .start-screen h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .start-screen p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin: 10px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .flashcard {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .flashcard.flipped {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-color: #28a745;
+        }
+
+        .question, .answer {
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        .question {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .flashcard.flipped .answer {
+            color: white;
+            font-weight: 500;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .score {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .results-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .results-screen h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .score-display {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #667eea;
+        }
+
+        .review-section {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .review-item {
+            background: #f8f9fa;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .review-item .question {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .review-item .answer {
+            color: #666;
+            font-style: italic;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .flip-hint {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .quiz-container {
+                padding: 20px;
+            }
+
+            .flashcard {
+                padding: 20px;
+                min-height: 150px;
+            }
+
+            .question, .answer {
+                font-size: 1.1em;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Flashcard Quiz</h1>
+            <p>Test your knowledge with AI-generated flashcards</p>
+
+            <div class="nav-menu">
+                <a href="/">📝 Generate</a>
+                <a href="/quiz">🎯 Quiz</a>
+                <a href="/about">ℹ️ About</a>
+            </div>
+        </div>
+
+        <div class="quiz-container" id="quizContainer">
+            <!-- Start Screen -->
+            <div class="start-screen" id="startScreen">
+                <h2>Ready to Test Your Knowledge?</h2>
+                <p>
+                    Challenge yourself with flashcards generated from your study notes.<br>
+                    Click the cards to reveal answers, track your progress, and improve your learning!
+                </p>
+                <button class="start-btn" onclick="startQuiz()">🚀 Start Quiz</button>
+                <button class="start-btn" onclick="loadCustomFlashcards()">📁 Load Custom Flashcards</button>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="hidden">
+                <div class="progress-info">
+                    <div>
+                        <strong>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span></strong>
+                    </div>
+                    <div class="score">
+                        Score: <span id="score">0</span>/<span id="totalAnswered">0</span>
+                    </div>
+                </div>
+
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="question" id="questionText">
+                        Loading question...
+                    </div>
+                    <div class="answer hidden" id="answerText">
+                        Loading answer...
+                    </div>
+                </div>
+
+                <div class="flip-hint">Click the card to reveal the answer</div>
+
+                <div class="controls" id="answerControls" style="display: none;">
+                    <button class="btn btn-success" onclick="markCorrect()">✅ Correct</button>
+                    <button class="btn btn-danger" onclick="markIncorrect()">❌ Incorrect</button>
+                    <button class="btn btn-secondary" onclick="skipQuestion()">⏭️ Skip</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div class="results-screen hidden" id="resultsScreen">
+                <h2>🎉 Quiz Complete!</h2>
+                <div class="score-display" id="finalScore">85%</div>
+                <p id="resultsMessage">Great job! You're doing well.</p>
+
+                <div class="review-section" id="reviewSection">
+                    <h3>Review Incorrect Answers</h3>
+                    <div id="incorrectAnswers"></div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="restartQuiz()">🔄 Try Again</button>
+                    <button class="btn btn-secondary" onclick="location.href='/'">🏠 Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentCardIndex = 0;
+        let correctAnswers = 0;
+        let totalAnswered = 0;
+        let incorrectAnswers = [];
+        let isFlipped = false;
+
+        // Sample flashcards (you can replace this with loaded flashcards)
+        const sampleFlashcards = [
+            {
+                question: "What is the powerhouse of the cell?",
+                answer: "The mitochondria is known as the powerhouse of the cell because it generates most of the cell's ATP through cellular respiration."
+            },
+            {
+                question: "What is photosynthesis?",
+                answer: "Photosynthesis is the process by which plants convert light energy into chemical energy, using carbon dioxide and water to produce glucose and oxygen."
+            },
+            {
+                question: "What is DNA?",
+                answer: "DNA (Deoxyribonucleic Acid) is the molecule that contains genetic instructions for the development, functioning, growth, and reproduction of all known organisms."
+            },
+            {
+                question: "What is the function of the nucleus?",
+                answer: "The nucleus controls the cell's growth and metabolism and contains the cell's genetic material (DNA)."
+            },
+            {
+                question: "What are cells?",
+                answer: "Cells are the basic structural and functional units of all living organisms, often called the 'building blocks of life'."
+            }
+        ];
+
+        async function loadFlashcards() {
+            try {
+                const response = await fetch('/api/flashcards');
+                const data = await response.json();
+                return data.length > 0 ? data : sampleFlashcards;
+            } catch (error) {
+                console.log('Loading sample flashcards:', error);
+                return sampleFlashcards;
+            }
+        }
+
+        function startQuiz() {
+            loadFlashcards().then(cards => {
+                flashcards = cards;
+                if (flashcards.length === 0) {
+                    alert('No flashcards available! Please generate some flashcards first.');
+                    return;
+                }
+
+                // Shuffle flashcards
+                flashcards.sort(() => Math.random() - 0.5);
+
+                // Reset variables
+                currentCardIndex = 0;
+                correctAnswers = 0;
+                totalAnswered = 0;
+                incorrectAnswers = [];
+
+                // Show quiz screen
+                document.getElementById('startScreen').classList.add('hidden');
+                document.getElementById('quizScreen').classList.remove('hidden');
+                document.getElementById('resultsScreen').classList.add('hidden');
+
+                // Update progress
+                document.getElementById('totalQuestions').textContent = flashcards.length;
+
+                // Load first question
+                loadQuestion();
+            });
+        }
+
+        function loadQuestion() {
+            if (currentCardIndex >= flashcards.length) {
+                showResults();
+                return;
+            }
+
+            const card = flashcards[currentCardIndex];
+            document.getElementById('currentQuestion').textContent = currentCardIndex + 1;
+            document.getElementById('questionText').textContent = card.question;
+            document.getElementById('answerText').textContent = card.answer;
+
+            // Reset card state
+            document.getElementById('flashcard').classList.remove('flipped');
+            document.getElementById('questionText').classList.remove('hidden');
+            document.getElementById('answerText').classList.add('hidden');
+            document.getElementById('answerControls').style.display = 'none';
+            isFlipped = false;
+        }
+
+        function flipCard() {
+            if (!isFlipped) {
+                document.getElementById('flashcard').classList.add('flipped');
+                document.getElementById('questionText').classList.add('hidden');
+                document.getElementById('answerText').classList.remove('hidden');
+                document.getElementById('answerControls').style.display = 'flex';
+                isFlipped = true;
+            }
+        }
+
+        function markCorrect() {
+            correctAnswers++;
+            totalAnswered++;
+            updateScore();
+            nextQuestion();
+        }
+
+        function markIncorrect() {
+            incorrectAnswers.push({
+                question: flashcards[currentCardIndex].question,
+                answer: flashcards[currentCardIndex].answer
+            });
+            totalAnswered++;
+            updateScore();
+            nextQuestion();
+        }
+
+        function skipQuestion() {
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            currentCardIndex++;
+            if (currentCardIndex >= flashcards.length) {
+                showResults();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = correctAnswers;
+            document.getElementById('totalAnswered').textContent = totalAnswered;
+        }
+
+        function showResults() {
+            // Hide quiz screen, show results
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            // Calculate percentage
+            const percentage = totalAnswered > 0 ? Math.round((correctAnswers / totalAnswered) * 100) : 0;
+            document.getElementById('finalScore').textContent = `${percentage}%`;
+
+            // Set message based on performance
+            let message = '';
+            if (percentage >= 90) {
+                message = '🌟 Outstanding! You\'re a master of this material!';
+            } else if (percentage >= 80) {
+                message = '🎉 Excellent work! You really know your stuff!';
+            } else if (percentage >= 70) {
+                message = '👍 Good job! Keep practicing to improve further!';
+            } else if (percentage >= 60) {
+                message = '📚 Not bad! Review the incorrect answers and try again.';
+            } else {
+                message = '💪 Keep studying! Practice makes perfect.';
+            }
+            document.getElementById('resultsMessage').textContent = message;
+
+            // Show incorrect answers for review
+            if (incorrectAnswers.length > 0) {
+                let reviewHTML = '';
+                incorrectAnswers.forEach((item, index) => {
+                    reviewHTML += `
+                        <div class="review-item">
+                            <div class="question">Q${index + 1}: ${item.question}</div>
+                            <div class="answer">A: ${item.answer}</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('incorrectAnswers').innerHTML = reviewHTML;
+            } else {
+                document.getElementById('reviewSection').innerHTML = '<p>🎊 Perfect score! No incorrect answers to review.</p>';
+            }
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        function loadCustomFlashcards() {
+            // This could open a file upload dialog or connect to a database
+            // For now, just start the quiz with available flashcards
+            startQuiz();
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('quizScreen').classList.contains('hidden')) return;
+
+            switch(e.key) {
+                case ' ':
+                case 'Enter':
+                    e.preventDefault();
+                    if (!isFlipped) {
+                        flipCard();
+                    } else {
+                        markCorrect();
+                    }
+                    break;
+                case 'c':
+                case 'C':
+                    if (isFlipped) markCorrect();
+                    break;
+                case 'i':
+                case 'I':
+                    if (isFlipped) markIncorrect();
+                    break;
+                case 's':
+                case 'S':
+                    skipQuestion();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
