@@ -123,7 +123,7 @@ def save_records(output_dir: Path, subject: str, records: List[Dict]) -> Path:
     return excel_path
 
 
-def load_all_records(output_dir: Path):
+def load_all_records(output_dir: Path) -> "pd.DataFrame":
     """
     Load all flashcards from Excel files in output_dir.
 
