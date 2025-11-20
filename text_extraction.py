@@ -166,6 +166,9 @@ def _extract_pdf(path: Path) -> str:
     Returns:
         PDF text content as string
     """
+    if not PDFPLUMBER_AVAILABLE:
+        raise ImportError("pdfplumber library not available. Install with: pip install pdfplumber")
+
     try:
         texts = []
 
