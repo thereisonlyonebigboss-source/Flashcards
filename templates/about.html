@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - AI Flashcard Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-menu {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            opacity: 0.8;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .content-card h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .content-card p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .feature-item h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .installation-steps {
+            counter-reset: step-counter;
+        }
+
+        .installation-steps ol {
+            list-style: none;
+            counter-increment: step-counter;
+        }
+
+        .installation-steps li {
+            position: relative;
+            padding-left: 50px;
+            margin-bottom: 20px;
+            counter-increment: step-counter;
+        }
+
+        .installation-steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ℹ️ About AI Flashcard Generator</h1>
+            <p>Learn more about this powerful learning tool</p>
+
+            <div class="nav-menu">
+                <a href="/">📝 Generate</a>
+                <a href="/quiz">🎯 Quiz</a>
+                <a href="/about">ℹ️ About</a>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2>🧠 What is AI Flashcard Generator?</h2>
+            <p>
+                AI Flashcard Generator is a web application that transforms your study notes into intelligent,
+                AI-powered flashcards. Using advanced language models like Llama 2, it automatically extracts
+                key concepts and creates question-answer pairs from your documents.
+            </p>
+            <p>
+                Whether you're studying biology, chemistry, history, or any subject, this tool helps you
+                create effective study materials without the manual work of writing flashcards yourself.
+            </p>
+        </div>
+
+        <div class="content-card">
+            <h2>✨ Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered Generation</h3>
+                    <p>Uses Llama 2 to intelligently extract key concepts and create meaningful flashcards</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📁</div>
+                    <h3>Multi-Format Support</h3>
+                    <p>Works with TXT, MD, DOCX, and PDF files - upload your existing study materials</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>Excel Export</h3>
+                    <p>Download your flashcards in Excel format for backup and offline studying</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Interactive Quiz Mode</h3>
+                    <p>Test your knowledge with an engaging, interactive quiz interface</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏷️</div>
+                    <h3>Smart Organization</h3>
+                    <p>Organize flashcards by subject and subtopic for structured learning</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Web-Based Interface</h3>
+                    <p>No installation required - works directly in your web browser</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2>🛠️ Technology Stack</h2>
+            <p>Built with modern, open-source technologies:</p>
+            <div class="tech-stack">
+                <span class="tech-item">Python</span>
+                <span class="tech-item">Flask</span>
+                <span class="tech-item">Llama 2</span>
+                <span class="tech-item">HTML5</span>
+                <span class="tech-item">CSS3</span>
+                <span class="tech-item">JavaScript</span>
+                <span class="tech-item">Pandas</span>
+                <span class="tech-item">OpenPyXL</span>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2>🚀 Getting Started</h2>
+            <p>Setting up the AI Flashcard Generator is simple:</p>
+
+            <div class="installation-steps">
+                <ol>
+                    <li>
+                        <strong>Install Llama (choose one option):</strong>
+                        <div class="code-block">
+# Option 1: Ollama (Recommended)
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama2
+
+# Option 2: Local Llama Installation
+# Follow instructions at: https://github.com/facebookresearch/llama
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Install Python dependencies:</strong>
+                        <div class="code-block">
+pip install flask pandas openpyxl python-docx pdfplumber requests
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Run the web application:</strong>
+                        <div class="code-block">
+python web_app.py
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Open your browser:</strong>
+                        <p>Navigate to <strong>http://localhost:5000</strong> to start generating flashcards!</p>
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2>💡 Usage Tips</h2>
+            <ul style="padding-left: 20px; line-height: 1.8;">
+                <li><strong>Start with clear notes:</strong> Well-structured documents produce better flashcards</li>
+                <li><strong>Use proper subjects:</strong> Organize your materials by subject and subtopic for better categorization</li>
+                <li><strong>Review generated cards:</strong> Always review AI-generated flashcards for accuracy</li>
+                <li><strong>Mix question types:</strong> Upload different types of documents for varied question styles</li>
+                <li><strong>Regular practice:</strong> Use the quiz mode regularly to reinforce learning</li>
+                <li><strong>Backup your work:</strong> Download Excel files to preserve your flashcard collections</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>🔧 Troubleshooting</h2>
+            <p><strong>Llama Connection Issues:</strong></p>
+            <ul style="padding-left: 20px; line-height: 1.8; margin-bottom: 15px;">
+                <li>Ensure Llama is properly installed and running</li>
+                <li>Check if Ollama service is active (if using Ollama)</li>
+                <li>Verify firewall settings aren't blocking local connections</li>
+                <li>Try restarting the Llama service</li>
+            </ul>
+
+            <p><strong>File Processing Issues:</strong></p>
+            <ul style="padding-left: 20px; line-height: 1.8;">
+                <li>Ensure file formats are supported (TXT, MD, DOCX, PDF)</li>
+                <li>Check that files aren't password-protected</li>
+                <li>Verify files contain readable text content</li>
+                <li>Try smaller files first to test the system</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>📚 Future Enhancements</h2>
+            <p>Planned improvements include:</p>
+            <ul style="padding-left: 20px; line-height: 1.8;">
+                <li>🎨 Enhanced UI/UX with themes and customization</li>
+                <li>📱 Mobile-responsive design improvements</li>
+                <li>👥 Multi-user support with accounts and progress tracking</li>
+                <li>🧠 Spaced repetition learning algorithm</li>
+                <li>🖼️ Image OCR support for visual content</li>
+                <li>🔊 Audio pronunciation for vocabulary cards</li>
+                <li>☁️ Cloud storage integration</li>
+                <li>📊 Advanced analytics and learning insights</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="back-btn">🏠 Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
