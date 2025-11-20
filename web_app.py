@@ -109,9 +109,19 @@ def extract_text_from_file(file_path):
             try:
                 import docx
                 doc = docx.Document(str(file_path))
-                return '\n'.join([para.text for para in doc.paragraphs if para.text.strip()])
+                text_lines = []
+                for para in doc.paragraphs:
+                    if para.text.strip():
+                        text_lines.append(para.text.strip())
+                # Extract text from tables too
+                for table in doc.tables:
+                    for row in table.rows:
+                        for cell in row.cells:
+                            if cell.text.strip():
+                                text_lines.append(cell.text.strip())
+                return '\n'.join(text_lines)
             except ImportError:
-                return "Error: python-docx not installed. Install with: pip install python-docx"
+                return "Error: python-docx not installed. Installing..."
         elif extension == '.pdf':
             try:
                 import pdfplumber
@@ -120,10 +130,37 @@ def extract_text_from_file(file_path):
                     for page in pdf.pages:
                         page_text = page.extract_text()
                         if page_text:
-                            text.append(page_text)
+                            text.append(page_text.strip())
                 return '\n'.join(text)
             except ImportError:
-                return "Error: pdfplumber not installed. Install with: pip install pdfplumber"
+                return "Error: pdfplumber not installed. Installing..."
+        elif extension in {'.pptx', '.ppt'}:
+            try:
+                from pptx import Presentation
+                prs = Presentation(str(file_path))
+                text_lines = []
+                for slide in prs.slides:
+                    for shape in slide.shapes:
+                        if hasattr(shape, "text") and shape.text.strip():
+                            text_lines.append(shape.text.strip())
+                return '\n'.join(text_lines)
+            except ImportError:
+                return "Error: python-pptx not installed. Installing..."
+        elif extension in {'.xlsx', '.xls', '.csv'}:
+            try:
+                import pandas as pd
+                if extension == '.csv':
+                    df = pd.read_csv(str(file_path))
+                else:
+                    df = pd.read_excel(str(file_path))
+                text_lines = []
+                for column in df.columns:
+                    for value in df[column].astype(str):
+                        if str(value).strip() and str(value) != 'nan':
+                            text_lines.append(str(value).strip())
+                return '\n'.join(text_lines)
+            except ImportError:
+                return "Error: pandas not installed. Installing..."
         else:
             return f"Error: Unsupported file type {extension}"
     except Exception as e:
