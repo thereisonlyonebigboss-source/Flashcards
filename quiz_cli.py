@@ -93,7 +93,7 @@ def select_subject(df) -> Optional:
             return None
 
 
-def select_subtopic(df: pd.DataFrame) -> Optional[pd.DataFrame]:
+def select_subtopic(df) -> Optional:
     """
     Let user select a subtopic from available options.
 
