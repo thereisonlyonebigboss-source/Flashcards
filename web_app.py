@@ -64,6 +64,8 @@ def call_llama(prompt, max_tokens=500):
                     cmd,
                     capture_output=True,
                     text=True,
+                    encoding='utf-8',
+                    errors='replace',
                     timeout=60,
                     check=True
                 )
