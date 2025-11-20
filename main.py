@@ -333,6 +333,12 @@ def cmd_statistics():
     print("FLASHCARD STATISTICS")
     print("=" * 60)
 
+    if not PANDAS_AVAILABLE:
+        print("Error: pandas library not available.")
+        print("Install with: pip install pandas openpyxl")
+        input("Press Enter to return to main menu...")
+        return
+
     output_path = get_path_input("Enter path to flashcards output folder: ", must_exist=True)
     if output_path is None:
         return
