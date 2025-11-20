@@ -103,6 +103,9 @@ class OllamaAIModel(AIModelInterface):
             model_name: Name of the Ollama model
             base_url: Base URL for Ollama API
         """
+        if not REQUESTS_AVAILABLE:
+            raise ImportError("requests library not available. Install with: pip install requests")
+
         self.model_name = model_name
         self.base_url = base_url.rstrip("/")
         self.api_url = f"{base_url}/api/generate"
