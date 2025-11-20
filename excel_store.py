@@ -129,6 +129,9 @@ def load_all_records(output_dir: Path) -> pd.DataFrame:
     Returns:
         DataFrame containing all flashcard records
     """
+    if not PANDAS_AVAILABLE:
+        raise ImportError("pandas library not available. Install with: pip install pandas openpyxl")
+
     output_dir = output_dir.resolve()
 
     if not output_dir.exists():
