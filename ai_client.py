@@ -9,8 +9,14 @@ Designed for easy swapping of different Llama 2 implementations.
 from typing import List, Dict, Optional
 import json
 import time
-import requests
 from abc import ABC, abstractmethod
+
+# Optional dependencies
+try:
+    import requests
+    REQUESTS_AVAILABLE = True
+except ImportError:
+    REQUESTS_AVAILABLE = False
 
 # HuggingFace transformers (can be swapped for other implementations)
 try:
