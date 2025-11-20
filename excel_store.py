@@ -9,7 +9,11 @@ from pathlib import Path
 from typing import List, Dict, Optional
 from datetime import datetime
 
-import pandas as pd
+try:
+    import pandas as pd
+    PANDAS_AVAILABLE = True
+except ImportError:
+    PANDAS_AVAILABLE = False
 
 from config import EXCEL_MODE, GLOBAL_EXCEL_FILENAME, get_excel_filename
 
