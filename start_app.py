@@ -101,6 +101,10 @@ def main():
         ('openpyxl', 'openpyxl'),
         ('requests', 'requests'),
         ('werkzeug', 'werkzeug'),
+        ('python-docx', 'docx'),
+        ('pdfplumber', 'pdfplumber'),
+        ('python-pptx', 'pptx'),
+        ('jinja2', 'jinja2'),
     ]
 
     all_installed = True
