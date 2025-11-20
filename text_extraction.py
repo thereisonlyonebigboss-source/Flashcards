@@ -133,6 +133,9 @@ def _extract_docx(path: Path) -> str:
     Returns:
         Document text as string
     """
+    if not DOCX_AVAILABLE:
+        raise ImportError("python-docx library not available. Install with: pip install python-docx")
+
     try:
         doc = docx.Document(str(path))
         lines = []
