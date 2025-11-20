@@ -6,14 +6,18 @@ Supports both global and per-subject storage modes with deduplication.
 """
 
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, TYPE_CHECKING
 from datetime import datetime
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 try:
     import pandas as pd
     PANDAS_AVAILABLE = True
 except ImportError:
     PANDAS_AVAILABLE = False
+    pd = None
 
 from config import EXCEL_MODE, GLOBAL_EXCEL_FILENAME, get_excel_filename
 
