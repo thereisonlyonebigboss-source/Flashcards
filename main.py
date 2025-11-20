@@ -12,7 +12,7 @@ from typing import Optional
 from config import resolve_path, DEFAULT_CARDS_PER_CHUNK, EXCEL_MODE, GLOBAL_EXCEL_FILENAME
 from text_extraction import iter_note_files, get_supported_extensions
 from flashcard_generator import generate_flashcards_for_files, get_generation_statistics
-from excel_store import save_records, load_all_records, backup_excel_file
+from excel_store import save_records, load_all_records, backup_excel_file, PANDAS_AVAILABLE
 from ai_client import create_ai_client, FlashcardAIClient
 from quiz_cli import main_quiz_interface
 
